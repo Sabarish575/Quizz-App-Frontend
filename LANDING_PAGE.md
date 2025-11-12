@@ -1,7 +1,7 @@
 # Landing Page Documentation
 
 ## Overview
-A stunning, conversion-optimized landing page for QuizApp that showcases all features, services, and benefits to attract and engage new users.
+A stunning, conversion-optimized landing page for TriviaVerse that showcases all features, services, and benefits to attract and engage new users.
 
 ## 🎨 Design Highlights
 
@@ -32,7 +32,7 @@ The first thing visitors see - designed to capture attention and drive action.
 - Drive conversions with clear CTAs
 
 ### 2. **Features Section**
-"Why Choose QuizApp?" - Showcases 6 core features
+"Why Choose TriviaVerse?" - Showcases 6 core features
 
 **Features Displayed:**
 1. **Diverse Quiz Library** 📚
@@ -193,7 +193,7 @@ Purple gradient banner with impressive numbers
 
 **5 Key Questions:**
 
-1. **Is QuizApp really free to use?**
+1. **Is TriviaVerse really free to use?**
    - Answer: Yes, completely free with unlimited access
 
 2. **Can I create my own quizzes?**
@@ -202,7 +202,7 @@ Purple gradient banner with impressive numbers
 3. **How does the leaderboard work?**
    - Answer: Points based on accuracy, speed, and difficulty
 
-4. **Can I use QuizApp for my classroom or business?**
+4. **Can I use TriviaVerse for my classroom or business?**
    - Answer: Yes, perfect for education and corporate use
 
 5. **What types of quizzes are available?**
@@ -390,8 +390,8 @@ onClick={() => navigate('/about')}
 
 ### Meta Tags (To Add)
 ```html
-<title>QuizApp - Master Any Topic with Interactive Quizzes</title>
-<meta name="description" content="Join 1M+ users on QuizApp. Take quizzes, track progress, compete on leaderboards. Free forever!" />
+<title>TriviaVerse - Master Any Topic with Interactive Quizzes</title>
+<meta name="description" content="Join 1M+ users on TriviaVerse. Take quizzes, track progress, compete on leaderboards. Free forever!" />
 ```
 
 ## 🎨 Design Assets
@@ -495,7 +495,7 @@ The landing page successfully:
 - ✅ **Looks Professional**: Modern, polished design
 - ✅ **Performs Well**: Optimized and responsive
 
-Perfect for attracting new users and converting them into active QuizApp members!
+Perfect for attracting new users and converting them into active TriviaVerse members!
 
 ---
 

@@ -155,10 +155,10 @@ const Contact = () => {
                     Email
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    info@quizapp.com
+                    info@TriviaVerse.com
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    support@quizapp.com
+                    support@TriviaVerse.com
                   </Typography>
                 </Box>
               </Box>

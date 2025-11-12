@@ -391,7 +391,7 @@ const Login = () => {
               >
                 <Box sx={{ position: 'relative', zIndex: 1, textAlign: 'center', color: 'white' }}>
                   <Typography variant="h2" sx={{ fontWeight: 800, mb: 2, textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>
-                    QuizApp
+                    TriviaVerse
                   </Typography>
                   <Typography variant="h5" sx={{ mb: 4, opacity: 0.95, maxWidth: 400, mx: 'auto' }}>
                     Master any topic with interactive quizzes and compete with millions worldwide

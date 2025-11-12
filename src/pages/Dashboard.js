@@ -169,7 +169,7 @@ const Dashboard = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 700 }}>
-            QuizApp
+            TriviaVerse
           </Typography>
           <Chip 
             label={userRole.toUpperCase()} 

@@ -79,7 +79,7 @@ const About = () => {
           }}
         >
           <Typography variant="h3" gutterBottom sx={{ fontWeight: 700 }}>
-            About QuizApp
+            About TriviaVerse
           </Typography>
           <Typography variant="h6" sx={{ maxWidth: '800px', opacity: 0.95 }}>
             Empowering learners worldwide through interactive quizzes and competitive
@@ -94,7 +94,7 @@ const About = () => {
             Our Mission
           </Typography>
           <Typography variant="body1" color="text.secondary" paragraph>
-            At QuizApp, we believe that learning should be engaging, accessible, and fun.
+            At TriviaVerse, we believe that learning should be engaging, accessible, and fun.
             Our mission is to create a platform where anyone can test their knowledge,
             learn new things, and compete with others in a friendly and supportive
             environment.
@@ -103,7 +103,7 @@ const About = () => {
             We strive to make education more interactive by providing a comprehensive
             quiz platform that covers diverse topics and difficulty levels. Whether
             you're a student preparing for exams, a professional looking to upskill, or
-            simply someone who loves trivia, QuizApp has something for everyone.
+            simply someone who loves trivia, TriviaVerse has something for everyone.
           </Typography>
         </Paper>
 

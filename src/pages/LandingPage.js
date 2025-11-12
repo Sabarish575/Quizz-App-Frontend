@@ -185,8 +185,8 @@ const LandingPage = () => {
   // FAQ
   const faqs = [
     {
-      question: 'Is QuizApp really free to use?',
-      answer: 'Yes! QuizApp is completely free to use. You can take unlimited quizzes, create your own, and compete on leaderboards without any charges.',
+      question: 'Is TriviaVerse really free to use?',
+      answer: 'Yes! TriviaVerse is completely free to use. You can take unlimited quizzes, create your own, and compete on leaderboards without any charges.',
     },
     {
       question: 'Can I create my own quizzes?',
@@ -197,8 +197,8 @@ const LandingPage = () => {
       answer: 'Your performance on each quiz contributes to your overall score. Points are awarded based on accuracy, speed, and difficulty. The leaderboard updates in real-time.',
     },
     {
-      question: 'Can I use QuizApp for my classroom or business?',
-      answer: 'Yes! QuizApp is perfect for educational institutions and businesses. You can create private quizzes, track student/employee progress, and generate reports.',
+      question: 'Can I use TriviaVerse for my classroom or business?',
+      answer: 'Yes! TriviaVerse is perfect for educational institutions and businesses. You can create private quizzes, track student/employee progress, and generate reports.',
     },
     {
       question: 'What types of quizzes are available?',
@@ -399,7 +399,7 @@ const LandingPage = () => {
               sx={{ mb: 2, fontWeight: 600 }}
             />
             <Typography variant="h2" sx={{ fontWeight: 700, mb: 2 }}>
-              Why Choose QuizApp?
+              Why Choose TriviaVerse?
             </Typography>
             <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 600, mx: 'auto' }}>
               Everything you need to create, take, and master quizzes in one powerful platform

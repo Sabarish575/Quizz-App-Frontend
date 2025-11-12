@@ -161,7 +161,7 @@ const Register = () => {
                   Create Account
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                  Join millions of learners on QuizApp
+                  Join millions of learners on TriviaVerse
                 </Typography>
               </Box>
 

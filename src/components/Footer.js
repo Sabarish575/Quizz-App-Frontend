@@ -54,7 +54,7 @@ const Footer = () => {
     { icon: <Instagram />, href: 'https://instagram.com', label: 'Instagram' },
     { icon: <LinkedIn />, href: 'https://linkedin.com', label: 'LinkedIn' },
     { icon: <GitHub />, href: 'https://github.com', label: 'GitHub' },
-    { icon: <Email />, href: 'mailto:info@quizapp.com', label: 'Email' },
+    { icon: <Email />, href: 'mailto:info@TriviaVerse.com', label: 'Email' },
   ];
 
   return (
