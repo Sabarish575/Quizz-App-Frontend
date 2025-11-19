@@ -61,6 +61,7 @@ const UserManagement = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogType, setDialogType] = useState('');
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [editFormData, setEditFormData] = useState({
     username: '',
     email: '',
@@ -110,7 +111,7 @@ const UserManagement = () => {
         isMounted = false;
       };
     }, []); // Only run once on mount
-
+   
   const users = data || [];
 
   const stats = [
@@ -147,7 +148,7 @@ const UserManagement = () => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    setSelectedUser(null);
+    // setSelectedUser(null);
   };
 
   const handleDialogOpen = (type) => {
@@ -172,6 +173,30 @@ const UserManagement = () => {
   const handleEditChange = (e) => {
     const { name, value } = e.target;
     setEditFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSaveRole = async () => {
+    if (!selectedUser || !editFormData.role) return;
+
+    try {
+      setLoading(true);
+      const response = await userService.updateUserRole(selectedUser.id, editFormData.role.toLowerCase());
+      // Update local state
+      setData((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === selectedUser.id
+            ? { ...user, role: editFormData.role }
+            : user
+        )
+      );
+      
+      handleDialogClose();
+    } catch (error) {
+      console.error('Error updating role:', error);
+      setError('Failed to update user role');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getRoleColor = (role) => {
@@ -502,8 +527,37 @@ const UserManagement = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose}>Cancel</Button>
-          <Button variant="contained" onClick={handleDialogClose}>
+          <Button 
+            variant="contained" 
+            onClick={() => setOpenConfirmDialog(true)}
+            disabled={loading}
+          >
             Save Changes
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Confirmation Dialog for Role Update */}
+      <Dialog open={openConfirmDialog} onClose={() => setOpenConfirmDialog(false)}>
+        <DialogTitle>Confirm Role Change</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Are you sure you want to change the role of user "{selectedUser?.username}" to "{editFormData.role}"?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirmDialog(false)} disabled={loading}>
+            Cancel
+          </Button>
+          <Button 
+            variant="contained" 
+            onClick={async () => {
+              await handleSaveRole();
+              setOpenConfirmDialog(false);
+            }}
+            disabled={loading}
+          >
+            {loading ? <CircularProgress size={20} /> : 'Confirm'}
           </Button>
         </DialogActions>
       </Dialog>
