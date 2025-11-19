@@ -19,8 +19,7 @@ import {
 import { ArrowBack, Edit } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserProfile, updateUser as updateUserAction } from '../store/slices/authSlice';
-import { userService } from '../services';
+import { fetchUserProfile } from '../store/slices/authSlice';
 import Footer from '../components/Footer';
 
 const Profile = () => {
@@ -69,7 +68,7 @@ const Profile = () => {
     return () => {
       isMounted = false;
     };
-  }, [dispatch]); // Only run once on mount
+  }, [dispatch, authUser, profile]); // Only run once on mount
 
   const displayUser = profile || authUser;
 

@@ -180,7 +180,7 @@ const UserManagement = () => {
 
     try {
       setLoading(true);
-      const response = await userService.updateUserRole(selectedUser.id, editFormData.role.toLowerCase());
+      await userService.updateUserRole(selectedUser.id, editFormData.role.toLowerCase());
       // Update local state
       setData((prevUsers) =>
         prevUsers.map((user) =>
@@ -234,6 +234,13 @@ const UserManagement = () => {
       );
     }
 
+  if(error) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+        <Typography color="error">{error}</Typography>
+      </Box>
+    )
+  }
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       {/* AppBar */}
