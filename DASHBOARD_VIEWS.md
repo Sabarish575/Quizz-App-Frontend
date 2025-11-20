@@ -57,7 +57,7 @@ For users who create quizzes and want to track their content's performance.
   - Quick actions: View Analytics, Edit Quiz
 
 - **Quick Actions**:
-  - **Create New Quiz**: Design new quiz content
+  - **Create New Quiz Channel**: Design new quiz channel content
   - **View Analytics**: Track detailed performance metrics
   - **Community**: See user engagement and feedback
 
@@ -247,7 +247,7 @@ The role-based dashboard system provides tailored experiences for different user
 | Feature | User | Creator | Admin |
 |---------|------|---------|-------|
 | Take Quizzes | ✅ | ✅ | ✅ |
-| Create Quizzes | ❌ | ✅ | ✅ |
+| Create QuizzesChannel | ✅ | ✅ |
 | View Analytics | Personal Only | Own Quizzes | All |
 | Manage Users | ❌ | ❌ | ✅ |
 | Platform Stats | ❌ | Limited | ✅ |

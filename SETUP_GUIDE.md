@@ -208,7 +208,7 @@ Launches the test runner
 - Edit profile button (UI)
 
 ### Quiz Management
-- Create new quizzes
+- Create new quizzes Channel
 - Edit existing quizzes
 - Delete quizzes
 - Admin functionality

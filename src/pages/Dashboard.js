@@ -432,7 +432,7 @@ const Dashboard = () => {
                       <Avatar sx={{ bgcolor: 'primary.main', mr: 2 }}>
                         <Create />
                       </Avatar>
-                      <Typography variant="h6">Create New Quiz</Typography>
+                      <Typography variant="h6">Create New Quiz Channel</Typography>
                     </Box>
                     <Typography variant="body2" color="text.secondary">
                       Design engaging quizzes for your audience
