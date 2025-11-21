@@ -435,7 +435,7 @@ const TakeQuiz = () => {
                   px: 4,
                 }}
               >
-                Start Quiz
+                Start Quiz 1
               </Button>
             </Box>
           </Paper>

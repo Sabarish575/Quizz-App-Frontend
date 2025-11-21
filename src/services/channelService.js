@@ -105,6 +105,35 @@ const channelService = {
       throw error.response?.data || error.message;
     }
   },
+
+  /**
+   * Add user to a channel by email
+   * @param {string} channelId - Channel ID
+   * @param {Object} userData - { email }
+   * @returns {Promise} Response with user addition status
+   */
+  addUserToChannel: async (channelId, userData) => {
+    try {
+      const response = await apiClient.post(`/channel/${channelId}/users`, userData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  /**
+   * Get users in a channel
+   * @param {string} channelId - Channel ID
+   * @returns {Promise} List of users in the channel
+   */
+  getChannelUsers: async (channelId) => {
+    try {
+      const response = await apiClient.get(`/channel/${channelId}/users`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
 };
 
 export default channelService;

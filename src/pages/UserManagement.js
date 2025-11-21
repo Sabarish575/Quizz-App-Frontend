@@ -483,7 +483,7 @@ const UserManagement = () => {
         onClose={handleMenuClose}
       >
         <MenuItem onClick={() => handleDialogOpen('edit')}>
-          <Edit sx={{ mr: 1, fontSize: 20 }} /> Edit User
+          <Edit sx={{ mr: 1, fontSize: 20 }} /> Update Role
         </MenuItem>
         <MenuItem onClick={() => handleDialogOpen('suspend')}>
           <Block sx={{ mr: 1, fontSize: 20 }} />{' '}
@@ -496,7 +496,7 @@ const UserManagement = () => {
 
       {/* Edit/Add User Dialog */}
       <Dialog open={openDialog && dialogType === 'edit'} onClose={handleDialogClose} maxWidth="sm" fullWidth>
-        <DialogTitle>Edit User 1</DialogTitle>
+        <DialogTitle>Edit User</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -507,6 +507,7 @@ const UserManagement = () => {
             value={editFormData.username}
             onChange={handleEditChange}
             sx={{ mb: 2, mt: 1 }}
+            disabled={true}
           />
           <TextField
             margin="dense"
@@ -517,6 +518,7 @@ const UserManagement = () => {
             value={editFormData.email}
             onChange={handleEditChange}
             sx={{ mb: 2 }}
+            disabled={true}
           />
           <FormControl fullWidth>
             <InputLabel>Role</InputLabel>

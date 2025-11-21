@@ -21,7 +21,7 @@ import {
   Alert,
   Snackbar,
 } from '@mui/material';
-import { ArrowBack, Add, Upload, PostAdd } from '@mui/icons-material';
+import { ArrowBack, Add, Upload, PostAdd, PersonAdd } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { channelService } from '../services';
@@ -40,6 +40,11 @@ const QuizManagement = () => {
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [bulkQuestionsJson, setBulkQuestionsJson] = useState('');
   const [uploadLoading, setUploadLoading] = useState(false);
+  const [hoveredChannel, setHoveredChannel] = useState(null);
+  const [openAddUserDialog, setOpenAddUserDialog] = useState(false);
+  const [selectedChannelForUser, setSelectedChannelForUser] = useState(null);
+  const [userEmail, setUserEmail] = useState('');
+  const [addingUser, setAddingUser] = useState(false);
 
   // Fetch channels on component mount
   useEffect(() => {
@@ -166,6 +171,41 @@ const QuizManagement = () => {
     }
   };
 
+  const handleAddUserToChannel = async () => {
+    if (!userEmail.trim()) {
+      setSnackbar({ open: true, message: 'Please enter an email address', severity: 'warning' });
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(userEmail)) {
+      setSnackbar({ open: true, message: 'Please enter a valid email address', severity: 'warning' });
+      return;
+    }
+
+    setAddingUser(true);
+    try {
+      await channelService.addUserToChannel(selectedChannelForUser._id, { email: userEmail });
+      
+      setSnackbar({ 
+        open: true, 
+        message: `User ${userEmail} added to ${selectedChannelForUser.name}!`, 
+        severity: 'success' 
+      });
+      setOpenAddUserDialog(false);
+      setUserEmail('');
+    } catch (err) {
+      console.error('Error adding user:', err);
+      setSnackbar({ 
+        open: true, 
+        message: err.message || 'Failed to add user to channel', 
+        severity: 'error' 
+      });
+    } finally {
+      setAddingUser(false);
+    }
+  };
+
   const handleCloseSnackbar = () => {
     setSnackbar({ ...snackbar, open: false });
   };
@@ -225,8 +265,46 @@ const QuizManagement = () => {
           <Grid container spacing={3}>
             {channels.map((channel, index) => (
               <Grid item xs={12} md={6} key={channel._id || index}>
-                <Card>
-                  <CardContent>
+                <Card
+                  onMouseEnter={() => setHoveredChannel(channel._id)}
+                  onMouseLeave={() => setHoveredChannel(null)}
+                  sx={{
+                    cursor: 'pointer',
+                    transition: 'all 0.3s',
+                    position: 'relative',
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      boxShadow: 6,
+                    },
+                  }}
+                >
+                  {/* Add User Icon - Shows on Hover */}
+                  {hoveredChannel === channel._id && (
+                    <IconButton
+                      sx={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        bgcolor: 'primary.main',
+                        color: 'white',
+                        zIndex: 2,
+                        '&:hover': {
+                          bgcolor: 'primary.dark',
+                        },
+                      }}
+                      size="small"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedChannelForUser(channel);
+                        setOpenAddUserDialog(true);
+                      }}
+                    >
+                      <PersonAdd fontSize="small" />
+                    </IconButton>
+                  )}
+                  <CardContent
+                    onClick={() => navigate(`/channel/${channel._id}`)}
+                  >
                     <Typography variant="h6" gutterBottom>
                       {channel.name}
                     </Typography>
@@ -440,6 +518,46 @@ const QuizManagement = () => {
             disabled={uploadLoading}
           >
             {uploadLoading ? 'Uploading...' : 'Upload Questions'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Add User Dialog */}
+      <Dialog open={openAddUserDialog} onClose={() => setOpenAddUserDialog(false)} maxWidth="sm" fullWidth>
+        <DialogTitle>Add User to {selectedChannelForUser?.name}</DialogTitle>
+        <DialogContent>
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              Enter the email address of the user you want to add to this channel.
+            </Typography>
+            <TextField
+              autoFocus
+              fullWidth
+              label="Email Address"
+              type="email"
+              value={userEmail}
+              onChange={(e) => setUserEmail(e.target.value)}
+              placeholder="user@example.com"
+              disabled={addingUser}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  handleAddUserToChannel();
+                }
+              }}
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenAddUserDialog(false)} disabled={addingUser}>
+            Cancel
+          </Button>
+          <Button 
+            variant="contained" 
+            onClick={handleAddUserToChannel}
+            disabled={addingUser}
+            startIcon={addingUser ? <CircularProgress size={20} /> : <PersonAdd />}
+          >
+            {addingUser ? 'Adding...' : 'Add User'}
           </Button>
         </DialogActions>
       </Dialog>

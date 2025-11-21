@@ -12,6 +12,7 @@ const Login = React.lazy(() => import('./pages/Login'));
 const Register = React.lazy(() => import('./pages/Register'));
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 const QuizManagement = React.lazy(() => import('./pages/QuizManagement'));
+const ChannelDetails = React.lazy(() => import('./pages/ChannelDetails'));
 const Profile = React.lazy(() => import('./pages/Profile'));
 const Leaderboard = React.lazy(() => import('./pages/Leaderboard'));
 const UserManagement = React.lazy(() => import('./pages/UserManagement'));
@@ -59,6 +60,7 @@ function App() {
               {/* Protected Routes */}
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               <Route path="/quiz-management" element={<ProtectedRoute><QuizManagement /></ProtectedRoute>} />
+              <Route path="/channel/:channelId" element={<ProtectedRoute><ChannelDetails /></ProtectedRoute>} />
               <Route path="/quiz/:quizId" element={<ProtectedRoute><TakeQuiz /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
               <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />

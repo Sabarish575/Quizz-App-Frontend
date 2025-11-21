@@ -539,7 +539,7 @@ const Dashboard = () => {
                         variant="contained"
                         onClick={() => navigate('/quiz/1')}
                       >
-                        Start Quiz
+                        Start Quiz 2
                       </Button>
                       <Button size="small">View Details</Button>
                     </CardActions>
