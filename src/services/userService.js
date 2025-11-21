@@ -102,6 +102,21 @@ const userService = {
       throw error.response?.data || error.message;
     }
   },
+
+  /**
+   * Update user status (Suspend/Activate) (Admin only)
+   * @param {string} userId - User ID
+   * @param {boolean} isActive - New status (true for active, false for suspended)
+   * @returns {Promise} Updated user
+   */
+  updateUserStatus: async (userId, isActive) => {
+    try {
+      const response = await apiClient.put(`/profile/user/${userId}/status`, { isActive });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
 };
 
 export default userService;

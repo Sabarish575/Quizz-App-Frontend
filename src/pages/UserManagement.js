@@ -41,7 +41,6 @@ import {
   Add,
   Edit,
   Delete,
-  Block,
   CheckCircle,
   Person,
   AdminPanelSettings,
@@ -198,6 +197,33 @@ const UserManagement = () => {
     } catch (error) {
       console.error('Error updating role:', error);
       setError('Failed to update user role');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleStatusChange = async () => {
+    if (!selectedUser) return;
+
+    try {
+      setLoading(true);
+      const newStatus = !(selectedUser.isActive === true && selectedUser.isActive !== "N/A");
+      
+      await userService.updateUserStatus(selectedUser.id, newStatus);
+      
+      // Update local state
+      setData((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === selectedUser.id
+            ? { ...user, isActive: newStatus }
+            : user
+        )
+      );
+      
+      handleDialogClose();
+    } catch (error) {
+      console.error('Error updating user status:', error);
+      setError('Failed to update user status');
     } finally {
       setLoading(false);
     }
@@ -630,18 +656,19 @@ const UserManagement = () => {
         </DialogTitle>
         <DialogContent>
           <Typography>
-            Are you sure you want to {selectedUser?.status === 'Active' ? 'suspend' : 'activate'} user "{selectedUser?.username}"?
+            Are you sure you want to {selectedUser?.isActive === true && selectedUser?.isActive !== "N/A" ? 'suspend' : 'activate'} user "{selectedUser?.username}"?
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDialogClose}>Cancel</Button>
+          <Button onClick={handleDialogClose} disabled={loading}>Cancel</Button>
           <Button
             variant="contained"
             color={selectedUser?.isActive === true && selectedUser?.isActive !== "N/A" ? 'warning' : 'success'}
-            onClick={handleDialogClose}
+            onClick={handleStatusChange}
+            disabled={loading}
             sx={{color: "white"}}
           >
-            {selectedUser?.isActive === true && selectedUser?.isActive !== "N/A" ? 'Suspend' : 'Activate'}
+            {loading ? <CircularProgress size={20} sx={{color: 'white'}} /> : (selectedUser?.isActive === true && selectedUser?.isActive !== "N/A" ? 'Suspend' : 'Activate')}
           </Button>
         </DialogActions>
       </Dialog>
