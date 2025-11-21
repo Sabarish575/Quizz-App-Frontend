@@ -82,12 +82,12 @@ const quizService = {
   /**
    * Submit quiz answers
    * @param {string} quizId - Quiz ID
-   * @param {Object} answers - User answers
-   * @returns {Promise} Quiz results
+   * @param {Object} answers - User answers {questionId: answerIndex}
+   * @returns {Promise} Quiz results with score and explanations
    */
   submitQuiz: async (quizId, answers) => {
     try {
-      const response = await apiClient.post(`/quizzes/${quizId}/submit`, { answers });
+      const response = await apiClient.post(`/quiz/${quizId}/submit`, { answers });
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;

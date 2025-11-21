@@ -39,6 +39,8 @@ import {
   PersonAdd,
   People,
   Email,
+  AutoAwesome,
+  ContentCopy,
 } from '@mui/icons-material';
 import { useNavigate, useParams } from 'react-router-dom';
 import Footer from '../components/Footer';
@@ -58,6 +60,12 @@ const ChannelDetails = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [users, setUsers] = useState([]);
   const [usersLoading, setUsersLoading] = useState(false);
+  
+  // AI Generator state
+  const [quizTopic, setQuizTopic] = useState('');
+  const [numQuestions, setNumQuestions] = useState(5);
+  const [generatedQuizData, setGeneratedQuizData] = useState(null);
+  const [generating, setGenerating] = useState(false);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -169,6 +177,82 @@ const ChannelDetails = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
+  const handleGenerateQuiz = async () => {
+    if (!quizTopic.trim()) {
+      setSnackbar({ open: true, message: 'Please enter a quiz topic', severity: 'warning' });
+      return;
+    }
+
+    if (numQuestions < 1 || numQuestions > 50) {
+      setSnackbar({ open: true, message: 'Number of questions must be between 1 and 50', severity: 'warning' });
+      return;
+    }
+
+    setGenerating(true);
+    try {
+      // Simulate AI generation (replace with actual API call)
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const mockQuestions = [];
+      for (let i = 1; i <= numQuestions; i++) {
+        mockQuestions.push({
+          id: `q_gen_${i}`,
+          question: `${quizTopic} question ${i}`,
+          options: [
+            { text: "Option A", isCorrect: i === 1, explanation: i === 1 ? "Correct explanation" : "" },
+            { text: "Option B", isCorrect: i === 2, explanation: i === 2 ? "Correct explanation" : "" },
+            { text: "Option C", isCorrect: i === 3, explanation: i === 3 ? "Correct explanation" : "" },
+            { text: "Option D", isCorrect: i > 3, explanation: i > 3 ? "Correct explanation" : "" }
+          ],
+          correctAnswer: i === 1 ? "Option A" : i === 2 ? "Option B" : i === 3 ? "Option C" : "Option D"
+        });
+      }
+
+      const quizData = {
+        id: `q_${Date.now()}`,
+        title: `AI Generated: ${quizTopic}`,
+        category: "AI Generated",
+        questions: mockQuestions
+      };
+
+      setGeneratedQuizData(quizData);
+      setSnackbar({ 
+        open: true, 
+        message: `Successfully generated ${numQuestions} questions!`, 
+        severity: 'success' 
+      });
+    } catch (err) {
+      console.error('Error generating quiz:', err);
+      setSnackbar({ 
+        open: true, 
+        message: 'Failed to generate quiz. Please try again.', 
+        severity: 'error' 
+      });
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  const handleCopyJSON = () => {
+    if (generatedQuizData) {
+      navigator.clipboard.writeText(JSON.stringify(generatedQuizData, null, 2));
+      setSnackbar({ 
+        open: true, 
+        message: 'Quiz JSON copied to clipboard!', 
+        severity: 'success' 
+      });
+    }
+  };
+
+  const handleAddToChannel = async () => {
+    // This would integrate with your bulk upload functionality
+    setSnackbar({ 
+      open: true, 
+      message: 'Feature coming soon! Use the copy button to paste into bulk upload.', 
+      severity: 'info' 
+    });
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', bgcolor: 'background.default' }}>
       <AppBar
@@ -217,6 +301,139 @@ const ChannelDetails = () => {
       </AppBar>
 
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4, flex: 1 }}>
+        {/* AI Quiz Generator Section */}
+        <Paper 
+          elevation={6} 
+          sx={{ 
+            p: 4, 
+            mb: 4, 
+            background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(139, 92, 246, 0.05) 100%)',
+            border: '2px solid',
+            borderColor: 'primary.light',
+            borderRadius: 3,
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+            <AutoAwesome sx={{ fontSize: 32, color: 'primary.main' }} />
+            <Typography variant="h5" sx={{ fontWeight: 700, color: 'primary.dark' }}>
+              AI Quiz Generator
+            </Typography>
+          </Box>
+
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={8}>
+              <TextField
+                fullWidth
+                label="Quiz Topic"
+                placeholder="e.g., React Hooks, Python Basics, World History"
+                value={quizTopic}
+                onChange={(e) => setQuizTopic(e.target.value)}
+                disabled={generating}
+                sx={{ mb: 2 }}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <TextField
+                fullWidth
+                label="# of Questions"
+                type="number"
+                value={numQuestions}
+                onChange={(e) => setNumQuestions(parseInt(e.target.value) || 5)}
+                disabled={generating}
+                inputProps={{ min: 1, max: 50 }}
+              />
+            </Grid>
+          </Grid>
+
+          <Button
+            variant="contained"
+            size="large"
+            fullWidth
+            onClick={handleGenerateQuiz}
+            disabled={generating}
+            startIcon={generating ? <CircularProgress size={20} color="inherit" /> : <AutoAwesome />}
+            sx={{
+              mt: 3,
+              py: 1.5,
+              background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+              fontSize: '1.1rem',
+              fontWeight: 600,
+              '&:hover': {
+                background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
+                transform: 'translateY(-2px)',
+                boxShadow: '0 8px 20px rgba(99, 102, 241, 0.3)',
+              },
+              transition: 'all 0.2s',
+            }}
+          >
+            {generating ? 'Generating with AI...' : 'Generate with AI'}
+          </Button>
+
+          {/* Generated Quiz Display */}
+          {generatedQuizData && (
+            <Box sx={{ mt: 4 }}>
+              <Divider sx={{ mb: 3 }} />
+              <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, color: 'success.dark' }}>
+                Generated Quiz Data:
+              </Typography>
+              
+              <Paper 
+                elevation={2}
+                sx={{ 
+                  p: 3, 
+                  bgcolor: '#1e293b',
+                  color: '#10b981',
+                  maxHeight: 400,
+                  overflow: 'auto',
+                  fontFamily: 'monospace',
+                  fontSize: '0.85rem',
+                  borderRadius: 2,
+                  position: 'relative',
+                }}
+              >
+                <IconButton
+                  onClick={handleCopyJSON}
+                  sx={{
+                    position: 'absolute',
+                    top: 8,
+                    right: 8,
+                    bgcolor: 'rgba(255,255,255,0.1)',
+                    color: 'white',
+                    '&:hover': {
+                      bgcolor: 'rgba(255,255,255,0.2)',
+                    }
+                  }}
+                >
+                  <ContentCopy />
+                </IconButton>
+                <pre style={{ margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                  {JSON.stringify(generatedQuizData, null, 2)}
+                </pre>
+              </Paper>
+
+              <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
+                <Button
+                  variant="contained"
+                  color="success"
+                  startIcon={<ContentCopy />}
+                  onClick={handleCopyJSON}
+                  sx={{ flex: 1 }}
+                >
+                  Copy JSON
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleAddToChannel}
+                  sx={{ flex: 1 }}
+                >
+                  Add This Quiz to App
+                </Button>
+              </Box>
+            </Box>
+          )}
+        </Paper>
+
         {channelInfo && (
           <Paper sx={{ p: 3, mb: 4, background: 'linear-gradient(135deg, #667eea15 0%, #764ba205 100%)' }}>
             <Typography variant="h5" sx={{ fontWeight: 600, mb: 1 }}>

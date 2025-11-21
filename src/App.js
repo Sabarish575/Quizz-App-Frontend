@@ -19,6 +19,7 @@ const UserManagement = React.lazy(() => import('./pages/UserManagement'));
 const About = React.lazy(() => import('./pages/About'));
 const Contact = React.lazy(() => import('./pages/Contact'));
 const TakeQuiz = React.lazy(() => import('./pages/TakeQuiz'));
+const QuizResults = React.lazy(() => import('./pages/QuizResults'));
 const OurTeam = React.lazy(() => import('./pages/OurTeam'));
 const Careers = React.lazy(() => import('./pages/Careers'));
 const HelpCenter = React.lazy(() => import('./pages/HelpCenter'));
@@ -62,6 +63,7 @@ function App() {
               <Route path="/quiz-management" element={<ProtectedRoute><QuizManagement /></ProtectedRoute>} />
               <Route path="/channel/:channelId" element={<ProtectedRoute><ChannelDetails /></ProtectedRoute>} />
               <Route path="/quiz/:quizId" element={<ProtectedRoute><TakeQuiz /></ProtectedRoute>} />
+              <Route path="/quiz-results" element={<ProtectedRoute><QuizResults /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
               <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
               <Route path="/user-management" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />

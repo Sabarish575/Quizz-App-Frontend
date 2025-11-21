@@ -33,6 +33,7 @@ import {
 } from '@mui/icons-material';
 import { useParams, useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
+import quizService from '../services/quizService';
 
 const TakeQuiz = () => {
   const { quizId } = useParams();
@@ -66,24 +67,28 @@ const TakeQuiz = () => {
           question: 'What is the output of: console.log(typeof null)?',
           options: ['null', 'undefined', 'object', 'number'],
           correctAnswer: 2, // index of correct option
+          explanation: 'In JavaScript, typeof null returns "object". This is actually a bug in JavaScript that has been kept for backward compatibility. Despite being a primitive value, null is reported as an object.',
         },
         {
           id: 2,
           question: 'Which method is used to add elements to the end of an array?',
           options: ['push()', 'pop()', 'shift()', 'unshift()'],
           correctAnswer: 0,
+          explanation: 'The push() method adds one or more elements to the end of an array and returns the new length. pop() removes the last element, shift() removes the first element, and unshift() adds elements to the beginning.',
         },
         {
           id: 3,
           question: 'What does "===" operator check?',
           options: ['Value only', 'Type only', 'Both value and type', 'Reference only'],
           correctAnswer: 2,
+          explanation: 'The strict equality operator (===) checks both the value and the type. It returns true only if both operands are of the same type and have the same value. Unlike ==, it does not perform type coercion.',
         },
         {
           id: 4,
           question: 'Which keyword is used to declare a constant in JavaScript?',
           options: ['var', 'let', 'const', 'static'],
           correctAnswer: 2,
+          explanation: 'The const keyword declares a block-scoped constant. Once assigned, the value cannot be reassigned. However, if the constant is an object or array, the contents can still be modified.',
         },
         {
           id: 5,
@@ -95,12 +100,14 @@ const TakeQuiz = () => {
             'An error handling mechanism'
           ],
           correctAnswer: 0,
+          explanation: 'A closure is a function that has access to variables in its outer (enclosing) lexical scope, even after the outer function has returned. Closures are commonly used for data privacy and creating function factories.',
         },
         {
           id: 6,
           question: 'Which method converts JSON string to JavaScript object?',
           options: ['JSON.parse()', 'JSON.stringify()', 'JSON.convert()', 'JSON.object()'],
           correctAnswer: 0,
+          explanation: 'JSON.parse() converts a JSON string into a JavaScript object. Conversely, JSON.stringify() converts a JavaScript object into a JSON string. These methods are essential for working with APIs and data serialization.',
         },
         {
           id: 7,
@@ -112,18 +119,21 @@ const TakeQuiz = () => {
             'To prevent memory leaks'
           ],
           correctAnswer: 0,
+          explanation: '"use strict" enables strict mode in JavaScript, which catches common coding mistakes and unsafe actions. It prevents the use of undeclared variables, eliminates silent errors, and prohibits certain syntax that may be poorly thought out.',
         },
         {
           id: 8,
           question: 'Which array method creates a new array with results of calling a function?',
           options: ['forEach()', 'map()', 'filter()', 'reduce()'],
           correctAnswer: 1,
+          explanation: 'The map() method creates a new array by calling a provided function on every element in the array. It transforms each element and returns the transformed values in a new array without modifying the original.',
         },
         {
           id: 9,
           question: 'What does NaN stand for?',
           options: ['Null and Null', 'Not a Number', 'New Array Number', 'Negative Number'],
           correctAnswer: 1,
+          explanation: 'NaN stands for "Not a Number" and is a special value indicating that a value is not a legal number. Interestingly, NaN is the only value in JavaScript that is not equal to itself (NaN !== NaN is true).',
         },
         {
           id: 10,
@@ -135,6 +145,7 @@ const TakeQuiz = () => {
             'Promise.new()'
           ],
           correctAnswer: 0,
+          explanation: 'Promises are created using the Promise constructor: new Promise((resolve, reject) => {...}). Promises represent the eventual completion or failure of an asynchronous operation and allow for cleaner async code handling.',
         },
         {
           id: 11,
@@ -146,12 +157,14 @@ const TakeQuiz = () => {
             'Document Oriented Markup'
           ],
           correctAnswer: 0,
+          explanation: 'The Document Object Model (DOM) is a programming interface for HTML and XML documents. It represents the page structure as a tree of objects, allowing programs to manipulate the document structure, style, and content dynamically.',
         },
         {
           id: 12,
           question: 'Which event occurs when a user clicks on an HTML element?',
           options: ['onmouseclick', 'onclick', 'onpress', 'onhover'],
           correctAnswer: 1,
+          explanation: 'The onclick event handler is triggered when a user clicks on an HTML element. It can be used inline in HTML or attached via JavaScript using addEventListener. It\'s one of the most commonly used event handlers in web development.',
         },
         {
           id: 13,
@@ -163,6 +176,7 @@ const TakeQuiz = () => {
             'let can be redeclared'
           ],
           correctAnswer: 0,
+          explanation: 'let is block-scoped (only exists within the nearest enclosing block), while var is function-scoped (exists throughout the function). let also prevents variable hoisting issues and cannot be redeclared in the same scope, making code more predictable.',
         },
         {
           id: 14,
@@ -174,12 +188,14 @@ const TakeQuiz = () => {
             'The previous object'
           ],
           correctAnswer: 0,
+          explanation: 'The "this" keyword refers to the current object or the object that the function is a property of. Its value depends on how the function is called - in methods it refers to the owner object, in regular functions it may refer to the global object (or undefined in strict mode).',
         },
         {
           id: 15,
           question: 'Which company developed JavaScript?',
           options: ['Microsoft', 'Netscape', 'Oracle', 'Mozilla'],
           correctAnswer: 1,
+          explanation: 'JavaScript was created by Brendan Eich at Netscape Communications in 1995. It was initially called Mocha, then LiveScript, and finally JavaScript. Despite its name, JavaScript has no direct relation to Java - the name was chosen for marketing purposes.',
         },
       ],
     };
@@ -191,25 +207,38 @@ const TakeQuiz = () => {
   // Calculate results
   const calculateResults = useCallback(() => {
     let correctCount = 0;
-    quiz.questions.forEach((question) => {
-      if (answers[question.id] === question.correctAnswer) {
+    const questionsWithResults = quiz.questions.map((question) => {
+      const userAnswerIndex = answers[question.id];
+      const isCorrect = userAnswerIndex === question.correctAnswer;
+      
+      if (isCorrect) {
         correctCount++;
       }
+
+      return {
+        id: question.id,
+        question: question.question,
+        userAnswer: userAnswerIndex !== undefined ? question.options[userAnswerIndex] : null,
+        correctAnswer: question.options[question.correctAnswer],
+        options: question.options,
+        isCorrect,
+        explanation: question.explanation || `The correct answer is "${question.options[question.correctAnswer]}".`,
+      };
     });
 
-    const score = Math.round((correctCount / quiz.totalQuestions) * 100);
-    const passed = score >= quiz.passingScore;
+    const score = correctCount;
+    const passed = Math.round((correctCount / quiz.totalQuestions) * 100) >= quiz.passingScore;
 
-    // Navigate to results page with data
+    // Navigate to results page with detailed data
     setTimeout(() => {
-      navigate('/dashboard', {
+      navigate('/quiz-results', {
         state: {
-          quizCompleted: true,
           quizTitle: quiz.title,
           score,
           totalQuestions: quiz.totalQuestions,
           correctAnswers: correctCount,
           passed,
+          questions: questionsWithResults,
         },
       });
     }, 500);
