@@ -52,7 +52,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { userService } from '../services';
-import { getRoleColor, getStatusColor } from '../utils/helpers';
+import { getRoleColor, getStatusColor,getActiveColor } from '../utils/helpers';
 
 const UserManagement = () => {
   const navigate = useNavigate();
@@ -72,9 +72,6 @@ const UserManagement = () => {
 
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
-
-
-
 
    useEffect(() => {
       let isMounted = true;
@@ -264,45 +261,6 @@ const UserManagement = () => {
       </Box>
     )
   }
-
-const statusChecker = (user) => {
-  // Always highest priority
-  if (user.isOnline) {
-    return { color: "success", label: "Online" };
-  }
-
-  const lastActive = user.lastActive;
-
-  if (!lastActive) {
-    return { color: "default", label: "Offline" };
-  }
-
-  // CASE 1: lastActive is a valid timestamp
-  const parsedDate = new Date(lastActive);
-  if (!isNaN(parsedDate.getTime())) {
-    const now = new Date();
-    const diffHours = (now - parsedDate) / (1000 * 60 * 60);
-
-    if (diffHours <= 24) {
-      return { color: "warning", label: "Active Recently" };
-    }
-
-    return { color: "default", label: "Offline" };
-  }
-
-  // CASE 2: lastActive is a string like "5 min ago", "2 hours ago"
-  const text = lastActive.toLowerCase();
-
-  if (
-    text.includes("min") ||
-    text.includes("hour") ||
-    text.includes("1 day")
-  ) {
-    return { color: "warning", label: "Active Recently" };
-  }
-
-  return { color: "default", label: "Offline" };
-};
 
 
 
@@ -518,18 +476,13 @@ const statusChecker = (user) => {
                     <TableCell align="center">
                       <Typography variant="body2" color="text.secondary">
 
-                        <TableCell align="center">
-                          {(() => {
-                            const status = statusChecker(user);
-                            return (
-                              <Chip
-                                label={status?.label}
-                                size="small"
-                                color={status?.color}
-                              />
-                            );
-                          })()}
-                        </TableCell>
+                          <TableCell align="center">
+                          <Chip
+                            label={user.lastActive}
+                            size="small"
+                            color={getActiveColor(user.lastActive)}
+                          />
+                          </TableCell>
 
                       </Typography>
                     </TableCell>

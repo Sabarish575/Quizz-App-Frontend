@@ -168,3 +168,16 @@ export const  getRoleColor = (role) => {
 export const getStatusColor = (status) => {
   return status === 'true' || status === "N/A" ? 'error' : 'success';
 };
+
+
+export const getActiveColor=(value)=>{
+
+  if(value.toLowerCase()==="online"){
+    return "success";
+  }
+
+  if(value.toLowerCase().includes("minutes") || value.toLowerCase().includes("min")){
+    return "warning";
+  }
+
+}
